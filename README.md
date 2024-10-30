@@ -1,2 +1,2 @@
 # Zaps
-A Min Zapier
+Nano Zapier
