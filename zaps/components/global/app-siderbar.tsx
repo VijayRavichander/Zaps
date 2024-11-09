@@ -3,6 +3,7 @@ import { CircuitBoardIcon, Home, Inbox, Search, Settings, ReceiptText, Layers } 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -10,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { ModeToggle } from "./mode-toggle"
 
 // Menu items.
 const items = [
@@ -84,6 +86,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="py-5 border-t-[2px]">
+        <ModeToggle />
+      </SidebarFooter>
     </Sidebar>
   )
 }
