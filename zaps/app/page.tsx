@@ -44,11 +44,13 @@ export default function Home() {
            }/>
            </div>
         </section>
-        <InfiniteMovingCards 
-        className="md:mt-[18rem] mt-[1rem]"
-        items = {clients}
-        direction="right"
-        speed = "slow" />
+        <section>
+          <InfiniteMovingCards 
+          className="md:mt-[18rem] mt-[1rem]"
+          items = {clients}
+          direction="right"
+          speed = "slow" />
+        </section>
         <section>
           <HeroHighlight className="md:mt-[-200px] mt-[-350px] flex items-center flex-col font-semibold mb-[-100px]">
             <div className="text-3xl md:text-5xl bg-clip-text
