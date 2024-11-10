@@ -7,6 +7,7 @@ const SettingsPage = () => {
         backdrop-blur-lg flex items-center border-b min-w-full'>
             Settings
         </h1>
+        
         <div className='p-6'>
             <ProfileForm />
         </div>
