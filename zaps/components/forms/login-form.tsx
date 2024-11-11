@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { useTransition, useState } from "react";
 import {
   Form,
   FormControl,
@@ -11,24 +12,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Socials } from "../global/socials";
-import { Separator } from "../ui/separator";
+import { Socials } from "@/components/global/socials";
+import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { Card, CardHeader, CardTitle, CardFooter, CardContent } from "../ui/card";
+import { Card, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
+import { FormError } from "@/components/forms/form-error";
+import { FormSuccess } from "@/components/forms/form-success";
+import { login } from "@/actions/login";
+import { loginSchema } from "@/schemas/loginSchema";
 
-const loginSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-});
+
+
 
 export function LoginForm() {
+
+ 
+  const [success, setSuccess] = useState<string | undefined>("")
+  const [error, setError] = useState<string | undefined>("")
+
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,9 +45,18 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
-      // Add your login logic here
-      alert("Logging Innn")
-      console.log(values);
+        startTransition(async () => {
+            // Reset the Values
+            setSuccess("")
+            setError("")
+            
+            // Server Action
+            const status = await login(values);
+            setSuccess(status.success)
+            setError(status.error)
+
+
+        })
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -66,7 +81,7 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input placeholder="Enter your email" {...field} disabled = {isPending} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,6 +97,7 @@ export function LoginForm() {
                     <Input
                       type="password"
                       placeholder="Enter your password"
+                      disabled = {isPending}
                       {...field}
                     />
                   </FormControl>
@@ -91,12 +107,15 @@ export function LoginForm() {
             />
           </form>
         </Form>
+        <FormError message = {error} />
+        <FormSuccess message = {success} />
         </CardContent>
 
         <CardFooter className="flex justify-center">
           <Button
             type="submit"
             onClick={form.handleSubmit(onSubmit)}
+            disabled = {isPending}
             className="px-5 w-full bg-white text-black"
             variant="outline"
           >
