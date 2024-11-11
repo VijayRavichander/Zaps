@@ -10,7 +10,7 @@ export const FormSuccess = ({message} : FormSuccessProps) => {
         return null;
     }
 
-    return <div className="my-3 bg-emerald-500/15 p-3 rounded-md flex items-center 
+    return <div className="mt-5 mb-1 bg-emerald-500/15 p-3 rounded-md flex items-center 
     gap-x-2 text-sm text-success text-emerald-500">
         <CheckCircledIcon className="w-4 h-4" />
         <p>{message}</p>

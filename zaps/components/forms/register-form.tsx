@@ -22,28 +22,26 @@ import { Card, CardHeader, CardTitle, CardFooter, CardContent, CardDescription }
 import { FormError } from "@/components/forms/form-error";
 import { FormSuccess } from "@/components/forms/form-success";
 import { login } from "@/actions/login";
-import { loginSchema } from "@/schemas/loginSchema";
+import { signupSchema } from "@/schemas/signupSchema";
 
 
 
+export function RegisterForm() {
 
-export function LoginForm() {
-
- 
   const [success, setSuccess] = useState<string | undefined>("")
   const [error, setError] = useState<string | undefined>("")
 
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: z.infer<typeof signupSchema>) {
     try {
         startTransition(async () => {
             // Reset the Values
@@ -64,11 +62,10 @@ export function LoginForm() {
 
   return (
     <div>
-      <Card className="w-[350px]">
+      <Card className="w-[450px] mt-20">
         <CardHeader>
-          <CardTitle className="text-3xl">Login</CardTitle>
-          <CardDescription>Welcome Back!</CardDescription>
-
+          <CardTitle className="text-3xl">Create an account</CardTitle>
+          <CardDescription>Welcome!</CardDescription>
         </CardHeader>
         <CardContent>
         <Form {...form}>
@@ -76,6 +73,19 @@ export function LoginForm() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid w-full items-center gap-4"
           >
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your username" {...field} disabled = {isPending} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -121,7 +131,7 @@ export function LoginForm() {
             className="px-5 w-full bg-white text-black"
             variant="outline"
           >
-            Login
+            Sign Up
           </Button>
         </CardFooter>
         <CardFooter className="opacity-30 text-sm flex items-center justify-around">
@@ -132,7 +142,7 @@ export function LoginForm() {
         </CardFooter>
         <CardFooter className="flex justify-center">
           <Button variant="link" asChild>
-            <Link href="/auth/signup">Don't have an account already?</Link>
+            <Link href="/auth/login">Have an account already?</Link>
           </Button>
         </CardFooter>
       </Card>
