@@ -4,9 +4,15 @@ import { loginSchema } from "./schemas/loginSchema";
 import { getUserbyEmail } from "./lib/user";
 import bcryptjs from "bcryptjs";
 import { User } from "@prisma/client";
+import Github from "next-auth/providers/github";
+
 
 export default { 
     providers: [
+        Github({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        }), 
         Credentials({
             name: "Credentials",
             authorize: async (credentials) => {                
