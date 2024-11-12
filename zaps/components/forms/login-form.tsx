@@ -29,8 +29,6 @@ import { loginSchema } from "@/schemas/loginSchema";
 
 export function LoginForm() {
 
- 
-  const [success, setSuccess] = useState<string | undefined>("")
   const [error, setError] = useState<string | undefined>("")
 
   const [isPending, startTransition] = useTransition();
@@ -47,15 +45,13 @@ export function LoginForm() {
     try {
         startTransition(async () => {
             // Reset the Values
-            setSuccess("")
             setError("")
             
             // Server Action
             const status = await login(values);
-            setSuccess(status.success)
-            setError(status.error)
-
-
+            if(status){
+              setError(status.error)
+            }
         })
     } catch (error) {
       console.error("Login error:", error);
@@ -110,7 +106,6 @@ export function LoginForm() {
           </form>
         </Form>
         <FormError message = {error} />
-        <FormSuccess message = {success} />
         </CardContent>
 
         <CardFooter className="flex justify-center">

@@ -21,8 +21,8 @@ import { useForm } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardFooter, CardContent, CardDescription } from "@/components/ui/card";
 import { FormError } from "@/components/forms/form-error";
 import { FormSuccess } from "@/components/forms/form-success";
-import { login } from "@/actions/login";
 import { signupSchema } from "@/schemas/signupSchema";
+import { signup } from "@/actions/signup";
 
 
 
@@ -49,11 +49,10 @@ export function RegisterForm() {
             setError("")
             
             // Server Action
-            const status = await login(values);
+            const status = await signup(values);
+            
             setSuccess(status.success)
             setError(status.error)
-
-
         })
     } catch (error) {
       console.error("Login error:", error);
