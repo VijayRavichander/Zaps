@@ -12,7 +12,7 @@ export const Socials = () => {
 
   return (
     <div className="flex justify-around w-full gap-x-2">
-      <Button size="lg" className="w-full" variant="outline" onClick={() => {}}>
+      <Button size="lg" className="w-full" variant="outline" onClick={() => {onClick("google")}}>
         <FaGoogle />
       </Button>
       <Button size="lg" className="w-full" variant="outline" onClick={() => {onClick("github")}}>

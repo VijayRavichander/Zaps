@@ -23,12 +23,14 @@ import { FormError } from "@/components/forms/form-error";
 import { FormSuccess } from "@/components/forms/form-success";
 import { login } from "@/actions/login";
 import { loginSchema } from "@/schemas/loginSchema";
-
+import { useSearchParams } from "next/navigation";
 
 
 
 export function LoginForm() {
-
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? 
+  "Email is already used by different provider!" : "";
   const [error, setError] = useState<string | undefined>("")
 
   const [isPending, startTransition] = useTransition();
@@ -105,7 +107,7 @@ export function LoginForm() {
             />
           </form>
         </Form>
-        <FormError message = {error} />
+        <FormError message = {error || urlError} />
         </CardContent>
 
         <CardFooter className="flex justify-center">
