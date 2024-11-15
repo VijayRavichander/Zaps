@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import db from "./lib/db"
+import { getUserbyId } from "./lib/user"
 export const { auth, handlers, signIn, signOut } = NextAuth({
     pages: {
         signIn: "/auth/login", 
@@ -18,6 +19,21 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         }
     }, 
     callbacks: {
+        async signIn({account, user}){
+            if(account?.provider != "credentials") return true;
+            
+            if(!user.id){
+                return false
+            }
+
+            const exisitingUser = await getUserbyId(user.id);
+            
+            if(!exisitingUser?.emailVerified){
+                return false;
+            }
+
+            return true;
+        },
         async session({token, session}){
             if(token.sub && session.user){
                 session.user.id = token.sub;

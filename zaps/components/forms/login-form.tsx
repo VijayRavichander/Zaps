@@ -32,6 +32,8 @@ export function LoginForm() {
   const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? 
   "Email is already used by different provider!" : "";
   const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
+
 
   const [isPending, startTransition] = useTransition();
 
@@ -48,12 +50,15 @@ export function LoginForm() {
         startTransition(async () => {
             // Reset the Values
             setError("")
-            
+            setSuccess("")
+
             // Server Action
             const status = await login(values);
-            if(status){
-              setError(status.error)
-            }
+
+            console.log(status)
+
+            setError(status?.error)
+            setSuccess(status?.success)
         })
     } catch (error) {
       console.error("Login error:", error);
@@ -107,6 +112,7 @@ export function LoginForm() {
             />
           </form>
         </Form>
+        <FormSuccess message={success} />
         <FormError message = {error || urlError} />
         </CardContent>
 

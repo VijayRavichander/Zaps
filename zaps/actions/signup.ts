@@ -6,6 +6,7 @@ import db from "@/lib/db";
 import { getUserbyEmail } from "@/lib/user";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import {generateVerificationToken} from "@/lib/tokens"
 
 export const signup = async (values: z.infer<typeof signupSchema>) => {
   const validatedFields = signupSchema.safeParse(values);
@@ -32,12 +33,14 @@ export const signup = async (values: z.infer<typeof signupSchema>) => {
     }
   })
 
-  await signIn("credentials", {
-    email, 
-    password, 
-    redirectTo: DEFAULT_LOGIN_REDIRECT
-  })
+  const verificationToken = await generateVerificationToken(email);
+
+  // await signIn("credentials", {
+  //   email, 
+  //   password, 
+  //   redirectTo: DEFAULT_LOGIN_REDIRECT
+  // })
 
   // TODO: Send Verification Token Email
-  return { success: "User Created!" };
+  return { success: "Email Sent!" };
 };

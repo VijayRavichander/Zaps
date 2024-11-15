@@ -1,5 +1,6 @@
 "use server"
 import { signIn } from "@/auth";
+import { getUserbyEmail } from "@/lib/user";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { loginSchema } from "@/schemas/loginSchema";
 import { AuthError } from "next-auth";
@@ -11,6 +12,17 @@ export const login = async (values : z.infer<typeof loginSchema> ) =>{
   if (!validatedFields.success) { return { error: "Invalid Fields!"}}
 
   const {email, password} = validatedFields.data
+
+  const exisitingUser = await getUserbyEmail(email)
+
+  if(!exisitingUser || !exisitingUser.email){
+    return {error: "User doesn't exists. Please create an account"}
+  }
+
+  // if(!exisitingUser.emailVerified){
+  //   return {success: "Confirmation Email Sent!"}
+  // }
+
 
   try{
     await signIn("credentials", {
