@@ -12,12 +12,12 @@ export const getVerificationTokenbyEmail = async (email : string) => {
 }
 
 
-// export const getVerificationTokenby = (email : string) => {
+export const getVerificationUserbyToken = async (token : string) => {
 
-//     try {
-//         const verificationToken = db.verificationToken.findFirst({where: {email}})
-//         return verificationToken;
-//     }catch {
-//         return null; 
-//     }
-// }
+    try {
+        const verificationTokenUser = await db.verificationToken.findFirst({where: {token}})
+        return verificationTokenUser;
+    }catch {
+        return null; 
+    }
+}

@@ -1,5 +1,7 @@
 "use server"
 import { signIn } from "@/auth";
+import { sendVerificationEmail } from "@/lib/mail";
+import { generateVerificationToken } from "@/lib/tokens";
 import { getUserbyEmail } from "@/lib/user";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { loginSchema } from "@/schemas/loginSchema";
@@ -19,9 +21,17 @@ export const login = async (values : z.infer<typeof loginSchema> ) =>{
     return {error: "User doesn't exists. Please create an account"}
   }
 
-  // if(!exisitingUser.emailVerified){
-  //   return {success: "Confirmation Email Sent!"}
-  // }
+  if(!exisitingUser.emailVerified){
+    // TODO: Rate Limit
+    const verificationToken = await generateVerificationToken(exisitingUser.email);
+
+    await sendVerificationEmail(
+      verificationToken.email, 
+      verificationToken.token
+    )
+
+    return {success: "Confirmation Email Sent!"}
+  }
 
 
   try{

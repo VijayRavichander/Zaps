@@ -1,6 +1,9 @@
-import { RegisterForm } from "@/components/forms/register-form";
 
-const SignupPage = () => {
+import { RegisterForm } from "@/components/forms/register-form";
+import { VerificationForm } from "@/components/forms/verification-form";
+import { useSearchParams } from "next/navigation";
+const VerificationPage = () => {
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
       <div
@@ -8,10 +11,10 @@ const SignupPage = () => {
            py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_35%,#225_100%)]"
       ></div>
       <div className="z-10">
-        <RegisterForm />
+        <VerificationForm />
       </div>
     </div>
   );
 };
 
-export default SignupPage;
+export default VerificationPage;
