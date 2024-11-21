@@ -29,29 +29,25 @@ import {
 import { FormError } from "@/components/forms/form-error";
 import { FormSuccess } from "@/components/forms/form-success";
 import { login } from "@/actions/login";
-import { loginSchema } from "@/schemas/loginSchema";
 import { useSearchParams } from "next/navigation";
-
-export function LoginForm() {
+import { resetSchema } from "@/schemas/resetSchema";
+import { reset } from "@/actions/reset";
+export function ResetForm() {
   const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email is already used by different provider!"
-      : "";
+  
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof resetSchema>>({
+    resolver: zodResolver(resetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: z.infer<typeof resetSchema>) {
     try {
       startTransition(async () => {
         // Reset the Values
@@ -59,7 +55,7 @@ export function LoginForm() {
         setSuccess("");
 
         // Server Action
-        const status = await login(values);
+        const status = await reset(values);
 
         console.log(status);
 
@@ -75,8 +71,8 @@ export function LoginForm() {
     <div>
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle className="text-3xl">Login</CardTitle>
-          <CardDescription>Welcome Back!</CardDescription>
+          <CardTitle className="text-3xl">Reset Password</CardTitle>
+          <CardDescription>All Good!</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -101,31 +97,10 @@ export function LoginForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        disabled={isPending}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    <Button className="mx-0 px-0" variant="link">
-                      <Link href="/auth/reset">Forget Password?</Link>
-                    </Button>
-                  </FormItem>
-                )}
-              />
             </form>
           </Form>
           <FormSuccess message={success} />
-          <FormError message={error || urlError} />
+          <FormError message={error} />
         </CardContent>
 
         <CardFooter className="flex justify-center">
@@ -136,19 +111,11 @@ export function LoginForm() {
             className="px-5 w-full bg-white text-black"
             variant="outline"
           >
-            Login
+            Send reset email
           </Button>
         </CardFooter>
         <CardFooter className="opacity-30 text-sm flex items-center justify-around">
           <Separator className="bg-white" />
-        </CardFooter>
-        <CardFooter>
-          <Socials />
-        </CardFooter>
-        <CardFooter className="flex justify-center">
-          <Button variant="link" asChild>
-            <Link href="/auth/signup">Don't have an account already?</Link>
-          </Button>
         </CardFooter>
       </Card>
     </div>

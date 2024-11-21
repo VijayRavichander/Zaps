@@ -18,3 +18,18 @@ export const sendVerificationEmail = async (
     })
 
 }
+
+export const sendResetEmail = async (
+    email: string, 
+    token: string
+) => {
+
+    const resetURL = ""
+
+    await resend.emails.send({
+        from: "onboarding@resend.dev", 
+        to: email, 
+        subject: "Confirm your email", 
+        html: `<p>Hi, Welcome to Zaps! Click <a href=${resetURL}>here</a> to verify your email address</p>`
+    })
+}
