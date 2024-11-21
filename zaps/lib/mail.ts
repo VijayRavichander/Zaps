@@ -30,6 +30,6 @@ export const sendResetEmail = async (
         from: "onboarding@resend.dev", 
         to: email, 
         subject: "Confirm your email", 
-        html: `<p>Hi, Welcome to Zaps! Click <a href=${resetURL}>here</a> to verify your email address</p>`
+        html: `<p>Click <a href=${resetURL}>here</a> to reset your password using the link for your Zap Account!</p>`
     })
 }
