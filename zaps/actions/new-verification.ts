@@ -4,7 +4,7 @@ import db from "@/lib/db";
 import { getUserbyEmail } from "@/lib/user";
 import { getVerificationUserbyToken } from "@/lib/verification-email"
 
-export const userVerification = async ( token : string) => {
+export const userVerification = async (token : string) => {
 
     const exisitingToken = await getVerificationUserbyToken(token);
 
